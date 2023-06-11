@@ -6,16 +6,21 @@ import { Item, Image } from './ImageGalleryItem.styled';
 export const ImageGalleryItem = ({ webformatURL, tags, largeImageURL }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const toggleModal = () => {
-    setShowModal(prevShowModal => !prevShowModal);
+  const onOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const onCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
-    <Item onClick={toggleModal}>
-      <Image src={webformatURL} alt={tags} loading="lazy" />
-
-      {showModal && <Modal url={largeImageURL} alt={tags} onClose={toggleModal} />}
-    </Item>
+    <>
+      <Item onClick={onOpenModal}>
+        <Image src={webformatURL} alt={tags} loading="lazy" />
+      </Item>
+      {showModal && <Modal url={largeImageURL} alt={tags} onClose={onCloseModal} />}
+    </>
   );
 };
 

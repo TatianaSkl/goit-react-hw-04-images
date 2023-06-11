@@ -13,23 +13,24 @@ export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (!searchText) {
+      return;
+    }
     const fetchData = async () => {
-      if (page !== 1 || searchText !== '') {
-        setIsLoading(true);
-        try {
-          const response = await fetchGallery({ searchText, page });
-          if (response.hits.length === 0) {
-            throw new Error(`Sorry, no photo from ${searchText}!`);
-          }
-          setImages(prevImages => [...prevImages, ...response.hits]);
-          setTotalPages(Math.ceil(response.totalHits / 12));
-          setError(null);
-        } catch (error) {
-          setError(error.message);
-          setIsLoading(false);
-        } finally {
-          setIsLoading(false);
+      setIsLoading(true);
+      try {
+        const response = await fetchGallery({ searchText, page });
+        if (response.hits.length === 0) {
+          throw new Error(`Sorry, no photo from ${searchText}!`);
         }
+        setImages(prevImages => [...prevImages, ...response.hits]);
+        setTotalPages(Math.ceil(response.totalHits / 12));
+        setError(null);
+      } catch (error) {
+        setError(error.message);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
